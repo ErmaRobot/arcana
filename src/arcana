@@ -1,0 +1,37 @@
+#! /usr/bin/python3.10
+
+#external packages
+import os
+import sys
+
+#internal packages
+from arc_user import create_user
+from arc_user import rootd, workd 
+from arc_server import run_server
+from arc_client import run_client
+
+#get command line arguments
+if len(sys.argv) == 1:
+  print('USAGE: arcana <command | domain>')
+  print('       commands: ')
+  print('                 <domain>: return the password for the given domain')
+  print('                 create-user: create a new user for the current login, if one doesn\'t exist')
+  print('                 create-domain <domain> [password]: create a new domain with the given password')
+  print('                                                    or randomly create a password if left blank')
+  print('*arcana must be called using sudo')
+  exit()
+
+###### create user ######
+
+###### create domain ######
+#get username and password
+username = os.getenv('USERNAME')
+password = input()
+
+
+#login
+
+###### create domain ######
+###### get domain ######
+###### reset domain ######
+
