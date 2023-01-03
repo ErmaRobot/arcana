@@ -38,7 +38,7 @@ def sha256(msg, form='base64'):
     output = b64encode(h_bytes).decode()
   elif form == 'hex':
     output = h_bytes.hex()
-  else #raw:
+  else: #raw
     output = h_bytes
 
   return output
