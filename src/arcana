@@ -9,17 +9,7 @@ from arc_user import rootd, create_user
 #from arc_server import run_server
 #from arc_client import run_client
 
-def arc_create_user():
-  pass
-
-def arc_create_domain():
-  pass
-
-def arc_get_domain():
-  pass
-
-#get command line arguments
-if len(sys.argv) == 1:
+def usage():
   print('USAGE: arcana <command | domain>')
   print('       commands: ')
   print('                 <domain>: return the password for the given domain')
@@ -27,49 +17,65 @@ if len(sys.argv) == 1:
   print('                 create-domain <domain> [password]: create a new domain with the given password')
   print('                                                    or randomly create a password if left blank')
   print('*arcana must be called using sudo')
-  exit()
 
-# map user input to function calls
-password_min = 15
-password_max = 32
-alpha_upper = r'[ABCDEFGHIJKLMNOPQRSTUVWXYZ]'
-alpha_lower = r'[abcdefghijklmnopqrstuvwxyz]'
-alpha_numb = r'[0123456789]'
-alpha_numeric = r'('+alpha_upper+r')|('+alpha_lower+r')|('+alpha_numb+r')'
-symbols = r'[~!@#\$%\^&\*:;,\.\?\/\\\|<>]'
-password_re = r'(('+alpha_numeric+r')|('+symbols+r')){15,32}' 
-domain_re = r'('+alpha_numeric+r'|[\.\/~])+'
-create_user_re = r'create-user'
-create_domain_re  = r'create-domain '+domain_re+r'( -p( '+password_re+r')?)?'
-get_domain_re = domain_re
+def login():
+  # fork a server and client process 
+  # return Objects that correspond to those
+  # roles
+  return None
 
-print(f'passward character minimum: {password_min}')
-print(f'passward character maximum: {password_max}')
-print(f'alpha_upper = {alpha_upper}')
-print(f'alpha_lower = {alpha_lower}')
-print(f'alpha_numb = {alpha_numb}')
-print(f'alpha_numeric = {alpha_numeric}')
-print(f'symbols = {symbols}')
-print(f'password_re = {password_re}')
-print(f'domain_re = {domain_re}')
-print(f'create_user_re = {create_user_re}')
-print(f'create_domain_re = {create_domain_re}')
-print(f'get_domain_re = {get_domain_re}')
-                                  
-commands  = {'create-user': create_user_re, 'create-domain': create_domain_re, 'get-domain': get_domain_re}
-functions = {'create-user': arc_create_user, 'create-domain': arc_create_domain, 'get-domain': arc_get_domain}
+def arc_create_domain(cli):
+  pass
 
-###### create user ######
+def arc_get_domain(cli):
+  pass
 
-###### create domain ######
-#get username and password
-username = os.getenv('USERNAME')
-password = input()
+if __name__ == '__main__':
+  # There should always be at least one command line argument
+  if len(sys.argv) == 1:
+    usage()
+    exit()
 
+  # regular expressions and other constraints
+  # that are used to determine and direct user
+  # input
+  password_min = 15
+  password_max = 32
+  alpha_upper = r'[ABCDEFGHIJKLMNOPQRSTUVWXYZ]'
+  alpha_lower = r'[abcdefghijklmnopqrstuvwxyz]'
+  alpha_numb = r'[0123456789]'
+  alpha_numeric = r'('+alpha_upper+r')|('+alpha_lower+r')|('+alpha_numb+r')'
+  symbols = r'[~!@#\$%\^&\*:;,\.\?\/\\\|<>]'
+  password_re = r'(('+alpha_numeric+r')|('+symbols+r')){15,32}' 
+  domain_re = r'('+alpha_numeric+r'|[\.\/~])+'
+  create_user_re = r'create-user'
+  create_domain_re  = r'create-domain '+domain_re+r'( -p( '+password_re+r')?)?'
+  get_domain_re = domain_re
 
-#login
+  # map user input to function calls
+  commands  = {
+    'create-user': {'key':create_user_re, 'function':create_user},
+    'create-domain': {'key':create_domain_re, 'function':arc_create_domain},
+    'get-domain': {'key':get_domain_re, 'function':arc_get_domain}
+  } 
 
-###### create domain ######
-###### get domain ######
-###### reset domain ######
+  # format user input
+  cli = ' '.join(sys.argv[1:])
+
+  command_list = commands.keys()
+  found_command = None
+  for command in command_list:
+    if re.findall(commands[command]['key'], cli) is not None:
+      found_command = command
+      break
+
+  if found_command is None:
+    print(f'{cli}: is not a recognized command')
+    usage()
+    exit(-1)
+
+  if found_command == 'create-user':
+    commands[found_command]['function']
+  else:
+    commands[found_command]['function'](cli)
 
