@@ -16,7 +16,8 @@ def create_user(password):
   #check if root folder exists
   if 'arcana' in os.listdir('/var/local'):
     if f'{username}' in os.listdir(rootd):
-      if 'creds' in os.listdir(f'{rootd}{username}') or 'vault' in os.listdir(f'{rootd}{username}'):
+      if 'creds' in os.listdir(f'{rootd}{username}') or
+        'vault' in os.listdir(f'{rootd}{username}'):
         #user exists already, abort
         return {'result':'FAIL', 'msg':'user already exists'}
 
