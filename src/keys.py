@@ -50,7 +50,7 @@ def random_key(length, form='base64'):
     output = b64encode(r_bytes).decode()
   elif form == 'hex':
     output = r_bytes.hex()
-  else: #raw
+  else #raw:
     output = r_bytes
 
   return output

@@ -5,13 +5,12 @@ import ecrypt
 import json
 from base64 import b64decode, b64encode
 
-rootd = '/var/local/arcana'
-
 def create_user(password):
   #get username, user id, and group id
   username = os.getenv('USERNAME')
   userid = pwd.getpwnam(username).pw_uid
   groupid = pwd.getpwnam(username).pw_gid
+  rootd = '/var/local/arcana/'
 
   #check if root folder exists
   if 'arcana' in os.listdir('/var/local'):
@@ -45,7 +44,7 @@ def create_user(password):
   creds = {
     'user':f'{username}',
     'pass':f'{hashed_pass}',
-    'key':f'{enc_key}',
+    'key':f'{enc_key}'
     'salt':f'{saltB64}',
     'pepper':f'{salt2B64}'
   }
